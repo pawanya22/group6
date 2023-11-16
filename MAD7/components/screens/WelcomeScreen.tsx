@@ -8,10 +8,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import Spacing from '/Users/WCT/ProjectApp/constants/Spacing';
-import FontSize from '/Users/WCT/ProjectApp/constants/FontSize';
-import Colors from '/Users/WCT/ProjectApp/constants/Colors';
-import Font from '/Users/WCT/ProjectApp/constants/Font';
+import Spacing from '../../constants/Spacing';
+import FontSize from '../../constants/FontSize';
+import Colors from '../../constants/Colors';
+import Font from '../../constants/Font';
 import { useNavigation } from '@react-navigation/native';
 //import { NativeStackScreenProps } from '@react-navigation/native-stack';
 //import { RootStackParamList } from '../../types';
@@ -29,7 +29,7 @@ const WelcomeScreen = () => {
             height: height / 2,
           }}
           resizeMode="contain"
-          source={require('/Users/WCT/ProjectApp/assets/Heart_corazón.svg.png')}
+          source={require('../../assets/Heart_corazón.svg.png')}
         />
         <View
           style={{

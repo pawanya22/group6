@@ -7,11 +7,11 @@ import { Dimensions,
     TouchableOpacity,
     View, } from 'react-native'
   import React from 'react'
-  import Spacing from "/Users/WCT/ProjectApp/constants/Spacing";
-  import FontSize from "/Users/WCT/ProjectApp/constants/FontSize";
-  import Colors from "/Users/WCT/ProjectApp/constants/Colors";
-  import Font from "/Users/WCT/ProjectApp/constants/Font";
-  import AppTextInput from "/Users/WCT/ProjectApp/components/AppTextInput";
+  import Spacing from "../../constants/Spacing";
+  import FontSize from "../../constants/FontSize";
+  import Colors from "../../constants/Colors";
+  import Font from "../../constants/Font";
+  import AppTextInput from "../AppTextInput";
   import { useNavigation } from '@react-navigation/native';
   const { height } = Dimensions.get("window");
   
@@ -140,7 +140,7 @@ const Register = () => {
                 marginHorizontal: Spacing,
               }}>
                 <Image
-                  source={require('/Users/WCT/ProjectApp/assets/icons8-google-50.png')} 
+                  source={require('../../assets/icons8-google-50.png')} 
                   style={{
                     width: Spacing * 2, 
                     height: Spacing * 2, 
@@ -155,7 +155,7 @@ const Register = () => {
                 marginHorizontal: Spacing,
               }}>
                 <Image
-                  source={require('/Users/WCT/ProjectApp/assets/icons8-facebook-50.png')} 
+                  source={require('../../assets/icons8-facebook-50.png')} 
                   style={{
                     width: Spacing * 2, 
                     height: Spacing * 2, 
@@ -170,7 +170,7 @@ const Register = () => {
                 marginHorizontal: Spacing,
               }}>
                 <Image
-                  source={require('/Users/WCT/ProjectApp/assets/icons8-apple-50.png')} 
+                  source={require('../../assets/icons8-apple-50.png')} 
                   style={{
                     width: Spacing * 2, 
                     height: Spacing * 2, 
