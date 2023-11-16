@@ -1,5 +1,5 @@
-package com.projectapp;
-import android.os.Bundle;
+package com.mad7;
+
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
@@ -13,7 +13,7 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "ProjectApp";
+    return "MAD7";
   }
 
   /**
@@ -28,9 +28,5 @@ public class MainActivity extends ReactActivity {
         getMainComponentName(),
         // If you opted-in for the New Architecture, we enable the Fabric Renderer.
         DefaultNewArchitectureEntryPoint.getFabricEnabled());
-  }
-   @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(null);
   }
 }
