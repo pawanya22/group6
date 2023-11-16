@@ -158,7 +158,7 @@ const LoginScreen = () => {
                 marginHorizontal: Spacing,
               }}>
                 <Image
-                  source={require('/Users/WCT/ProjectApp/assets/icons8-google-50.png')} 
+                  source={require('../../assets/icons8-google-50.png')} 
                   style={{
                     width: Spacing * 2, 
                     height: Spacing * 2, 
@@ -174,7 +174,7 @@ const LoginScreen = () => {
                 marginHorizontal: Spacing,
               }}>
                 <Image
-                  source={require('/Users/WCT/ProjectApp/assets/icons8-facebook-50.png')} 
+                  source={require('../../assets/icons8-facebook-50.png')} 
                   style={{
                     width: Spacing * 2, 
                     height: Spacing * 2, 
@@ -190,7 +190,7 @@ const LoginScreen = () => {
                 marginHorizontal: Spacing,
               }}>
                 <Image
-                  source={require('/Users/WCT/ProjectApp/assets/icons8-apple-50.png')} 
+                  source={require('../../assets/icons8-apple-50.png')} 
                   style={{
                     width: Spacing * 2, 
                     height: Spacing * 2, 
