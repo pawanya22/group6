@@ -26,7 +26,7 @@ const MovieScreen: React.FC<MovieScreenProps> = () => {
   return (
     <ScrollView 
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 20, flex: 1, backgroundColor: 'black' }}>
+        contentContainerStyle={{ flexGrow: 1, backgroundColor: 'black' }}>
       <View style={{ width: '100%' }}>
         <View>
           <Image source={{uri:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4hgjD8Q2ZFVh95kLsSwr20CKZdHwNtD1osQ&usqp=CAU'}} style={{ width, height: height * 0.55 }} />
