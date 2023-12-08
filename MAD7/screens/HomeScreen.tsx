@@ -30,7 +30,7 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
           <Text style={{ fontWeight: 'bold', fontSize: 30, color: 'white' }}>
             <Text style={styles.text}>M</Text>ovies
           </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Search')}>
+          <TouchableOpacity onPress={() => navigation.navigate("Search")}>
             <Text style={{ color: 'white', fontSize: 18, marginLeft: 50, marginTop:2 }}>Search</Text>
           </TouchableOpacity>
         </View>
@@ -51,7 +51,7 @@ export default function HomeScreenWithStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Home" options={{ headerShown: false }} component={HomeScreen} />
-      <Stack.Screen name="Search" component={SearchScreen} />
+      <Stack.Screen name="Search" options={{ headerShown: false }} component={SearchScreen} />
     </Stack.Navigator>
   );
 }
