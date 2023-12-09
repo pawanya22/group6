@@ -1,48 +1,43 @@
-import { StyleSheet, Text, TouchableOpacity, View, ScrollView, Dimensions, SafeAreaView } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { Image } from 'react-native-elements'
-import { NavigationContainer, useRoute } from '@react-navigation/native'
-import { fetchPersonDetails, fetchPersonMovies } from '../../api/moviedb'
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View, ScrollView, Dimensions, SafeAreaView } from 'react-native';
+import { Image } from 'react-native-elements';
+import { useRoute } from '@react-navigation/native';
+import { fetchPersonDetails, fetchPersonMovies } from '../../api/moviedb';
 
+const { width, height } = Dimensions.get('window');
 
+interface ActorProps {}
 
-var { width, height } = Dimensions.get('window')
+const Actor: React.FC<ActorProps> = () => {
+  const [personMovies, setPersonMovies] = useState<any[]>([]);
+  const [person, setPerson] = useState<any>({});
+  const { params: item } = useRoute();
+  const [loading, setLoading] = useState<boolean>(false);
 
+  useEffect(() => {
+    setLoading(true);
+    console.log('person', item);
+    if (item?.id) {
+      getPersonDetails(item.id);
+    }
+  }, [item]);
 
-const Actor = () => {
+  const getPersonDetails = async (id: any) => {
+    const data = await fetchPersonDetails(id);
+    if (data) {
+      setPerson(data);
+      setLoading(false);
+      getPersonMovies(id);
+    }
+  };
 
- const[personMovies,setPersonMovies]=useState {[]};
- const[person,setPerson]=useState{[]};
- const {params:item} = useRoute();
- const [loading, setLoading] = useState(false);
-
-
- useEffect{()=>{
-  setLoading(true);
-  console.log('person',item);
-  getPersonDetails(item.id);
-
- },[item]};
-
- const getPersonDetails=async (id: any)=>{
-  const data =await fetchPersonDetails(id);
-  //console.log('got person details :',deta);
-  if(data) setPerson(data);
-  setLoading (false)
-  if(data) {
-    setPerson(data);
-}
-
- }
-
- const getPersonMovies = async (id: any)=>{
-  const data = await fetchPersonMovies(id);
-  console.log('got person movies')
-  if(data && data.cast){
+  const getPersonMovies = async (id: any) => {
+    const data = await fetchPersonMovies(id);
+    console.log('got person movies');
+    if (data && data.cast) {
       setPersonMovies(data.cast);
-  }
-
-}
+    }
+  };
 
   return (
     <ScrollView>
@@ -54,7 +49,7 @@ const Actor = () => {
 
           {/*preson details*/}
 
-          <View style={{ alignItems: 'center',/* shadowColor: 'white', shadowRadius: 40, shadowOffset: { width: 0, height: 5 }, shadowOpacity: 1 */ }}>
+          <View style={{ alignItems: 'center' }}>
             <View>
               <Image style={{ width: 200, height: 200, borderRadius: 100, marginTop: 50, alignContent: 'center', alignItems: 'center', borderWidth: 2, borderColor: '#ffffff' }} source={require('../../assest/images/ragna.jpg')} />
             </View>
@@ -76,13 +71,13 @@ const Actor = () => {
               <Text>2001.11.30</Text>
             </View>
             <View style={styles.box_line_1} />
-            <View style={{justifyContent: 'center',alignItems: 'center',}}>
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
               <Text>Know for</Text>
               <Text>Acting</Text>
             </View>
             <View style={styles.box_line_1} />
-            <View style={{justifyContent: 'center',alignItems: 'center',}}>
-              <Text>popiularity</Text>
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <Text>popularity</Text>
               <Text>20-30</Text>
             </View>
           </View>
@@ -109,29 +104,22 @@ const Actor = () => {
               <View style={{ height: 170, width: 120, backgroundColor: 'red', marginLeft: 10 }}></View>
             </View>
           </ScrollView>
-
-
-
         </View>
       </SafeAreaView>
     </ScrollView>
-
-  )
-}
-
-export default Actor
+  );
+};
 
 const styles = StyleSheet.create({
   details_box: {
     width: 320,
     height: 60,
-    //backgroundColor: '#1607ba',
     alignSelf: 'center',
     borderRadius: 30,
     flexDirection: 'row',
     marginTop: 10,
-    borderWidth:1,
-    borderColor:'#ffffff'
+    borderWidth: 1,
+    borderColor: '#ffffff',
   },
   frist_box: {
     marginLeft: 13,
@@ -142,18 +130,16 @@ const styles = StyleSheet.create({
     width: 2,
     height: 50,
     marginHorizontal: 10,
-    marginVertical: 5
-
+    marginVertical: 5,
   },
   second_box: {
     justifyContent: 'center',
     alignItems: 'center',
   },
-
   bio: {
     marginTop: 10,
-    marginLeft:10,
-    fontSize:20,
+    marginLeft: 10,
+    fontSize: 20,
   },
   bio_data: {
     marginLeft: 10,
@@ -161,15 +147,9 @@ const styles = StyleSheet.create({
   },
   similar: {
     marginTop: 10,
-    marginLeft:10,
-    fontSize:20,
+    marginLeft: 10,
+    fontSize: 20,
   },
-})
+});
 
-function setLoading(arg0: boolean) {
-  throw new Error('Function not implemented.')
-}
-function fetchActorDetails(id: any) {
-  throw new Error('Function not implemented.')
-}
-
+export default Actor;
