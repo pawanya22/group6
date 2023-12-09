@@ -1,7 +1,8 @@
 import { StyleSheet, Text, TouchableOpacity, View, ScrollView, Dimensions, SafeAreaView } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image } from 'react-native-elements'
-import { NavigationContainer } from '@react-navigation/native'
+import { NavigationContainer, useRoute } from '@react-navigation/native'
+import { fetchPersonDetails, fetchPersonMovies } from '../../api/moviedb'
 
 
 
@@ -10,7 +11,38 @@ var { width, height } = Dimensions.get('window')
 
 const Actor = () => {
 
- // const[personMovies,setPersonMovies]=useState {[1,2,3,4]}
+ const[personMovies,setPersonMovies]=useState {[]};
+ const[person,setPerson]=useState{[]};
+ const {params:item} = useRoute();
+ const [loading, setLoading] = useState(false);
+
+
+ useEffect{()=>{
+  setLoading(true);
+  console.log('person',item);
+  getPersonDetails(item.id);
+
+ },[item]};
+
+ const getPersonDetails=async (id: any)=>{
+  const data =await fetchPersonDetails(id);
+  //console.log('got person details :',deta);
+  if(data) setPerson(data);
+  setLoading (false)
+  if(data) {
+    setPerson(data);
+}
+
+ }
+
+ const getPersonMovies = async (id: any)=>{
+  const data = await fetchPersonMovies(id);
+  console.log('got person movies')
+  if(data && data.cast){
+      setPersonMovies(data.cast);
+  }
+
+}
 
   return (
     <ScrollView>
@@ -133,3 +165,11 @@ const styles = StyleSheet.create({
     fontSize:20,
   },
 })
+
+function setLoading(arg0: boolean) {
+  throw new Error('Function not implemented.')
+}
+function fetchActorDetails(id: any) {
+  throw new Error('Function not implemented.')
+}
+

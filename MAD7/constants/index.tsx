@@ -1,4 +1,4 @@
-export const apikeys ='movie db key';
+export const apikeys ='02221cab5de67332d75ff25ccc44e871';
 
 export const MovieData=[
     {
