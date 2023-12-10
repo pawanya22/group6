@@ -18,6 +18,7 @@ const MovieScreen: React.FC<MovieScreenProps> = () => {
   const [similarMovies, setSimilarMovies] = useState([1, 2, 3, 4, 5]);
   let movieName = 'Ant-Man and the Wasp: Quantumania';
 
+
   useEffect(() => {}, [item]);
 /*<LinearGradient
             colors={['transparent', 'rgba(23,23,23,0.8)', 'rgba(23,23,23, 1)']}
@@ -36,6 +37,7 @@ const MovieScreen: React.FC<MovieScreenProps> = () => {
             </TouchableOpacity>
           </View>
         </View>
+        
 
       <View style={{ marginTop: -(height * 0.09), marginBottom: 20 }}>
         <Text style={{ color: 'white', textAlign: 'center', fontSize: 24, fontWeight: 'bold', letterSpacing: 2, marginBottom: 10 }}>
