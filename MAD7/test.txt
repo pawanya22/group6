@@ -1,0 +1,19 @@
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyCwNCiQCPO6MMyMt9j-iwxtFRNRQuoFqdU",
+  authDomain: "movie-recommendation-app-mad.firebaseapp.com",
+  projectId: "movie-recommendation-app-mad",
+  storageBucket: "movie-recommendation-app-mad.appspot.com",
+  messagingSenderId: "125077124169",
+  appId: "1:125077124169:web:7440339f12144f63863b98"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+npm install firebase
