@@ -17,24 +17,24 @@ import {
       <TextInput
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
-        placeholderTextColor={Colors.primary}
+        placeholderTextColor={'#191970'}
         style={[
           {
             fontFamily: Font["regular"],
             fontSize: FontSize.small,
             padding: Spacing * 2,
-            backgroundColor: Colors.lightPrimary,
+            backgroundColor: '#E5E4E2',
             borderRadius: Spacing,
             marginVertical: Spacing,
           },
           focused && {
-            borderWidth: 3,
-            borderColor: Colors.primary,
+            borderWidth: 4,
+            borderColor: '#191970',
             shadowOffset: { width: 4, height: Spacing },
-            shadowColor: Colors.primary,
+            shadowColor: 'white',
             shadowOpacity: 0.2,
             shadowRadius: Spacing,
-            color:"black"
+            color:"#191970"
           },
         ]}
         {...otherProps}
