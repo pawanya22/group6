@@ -4,40 +4,27 @@ import { Image } from 'react-native-elements';
 import { useRoute } from '@react-navigation/native';
 import { fetchPersonDetails, fetchPersonMovies } from '../../api/moviedb';
 
-const { width, height } = Dimensions.get('window');
-
-interface ActorProps {}
-
-const Actor: React.FC<ActorProps> = () => {
-  const [personMovies, setPersonMovies] = useState<any[]>([]);
-  const [person, setPerson] = useState<any>({});
-  const { params: item } = useRoute();
-  const [loading, setLoading] = useState<boolean>(false);
+const Actor: React.FC = () => {
+  const [personDetails, setPersonDetails] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
-    console.log('person', item);
-    if (item?.id) {
-      getPersonDetails(item.id);
-    }
-  }, [item]);
+    const apiKey = '02221cab5de67332d75ff25ccc44e871';
+    const personId = 110; // Replace with the desired person's ID
+    const apiUrl = `https://api.themoviedb.org/3/person/${personId}?api_key=${apiKey}`;
 
-  const getPersonDetails = async (id: any) => {
-    const data = await fetchPersonDetails(id);
-    if (data) {
-      setPerson(data);
-      setLoading(false);
-      getPersonMovies(id);
-    }
-  };
-
-  const getPersonMovies = async (id: any) => {
-    const data = await fetchPersonMovies(id);
-    console.log('got person movies');
-    if (data && data.cast) {
-      setPersonMovies(data.cast);
-    }
-  };
+    const fetchData = async () => {
+      try {
+        const response = await fetch(apiUrl);
+        const result = await response.json();
+        setPersonDetails(result);
+        console.log(result);
+      } catch (error) {
+        console.error('Error fetching person details:', error);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <ScrollView>
@@ -51,12 +38,12 @@ const Actor: React.FC<ActorProps> = () => {
 
           <View style={{ alignItems: 'center' }}>
             <View>
-              <Image style={{ width: 200, height: 200, borderRadius: 100, marginTop: 50, alignContent: 'center', alignItems: 'center', borderWidth: 2, borderColor: '#ffffff' }} source={require('../../assest/images/ragna.jpg')} />
+              <Image style={{ width: 200, height: 200, borderRadius: 100, marginTop: 50, alignContent: 'center', alignItems: 'center', borderWidth: 2, borderColor: '#ffffff' }} source={{ uri: `https://image.tmdb.org/t/p/w500${personDetails.profile_path}` }} />
             </View>
           </View>
 
           <View style={{ alignItems: 'center', marginTop: 10 }}>
-            <Text style={{ fontSize: 30 }} >Travis Fimmel</Text>
+            <Text style={{ fontSize: 30 }} >{personDetails.name}</Text>
             <Text>Echuca, Victoria, Australia</Text>
           </View>
 
@@ -73,7 +60,7 @@ const Actor: React.FC<ActorProps> = () => {
             <View style={styles.box_line_1} />
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
               <Text>Know for</Text>
-              <Text>Acting</Text>
+              <Text>acting</Text>
             </View>
             <View style={styles.box_line_1} />
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
