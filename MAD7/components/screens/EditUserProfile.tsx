@@ -7,15 +7,15 @@ import Font from '../../constants/Font';
 import { useNavigation } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import ImagePicker, { Image as ImageType } from 'react-native-image-crop-picker';
-//import {db} from '../../config/firebase';
+import {db} from '../../config/firebase';
+import { collection, addDoc,setDoc,doc } from "firebase/firestore"; 
 import {auth} from '../../config/firebase';
 
 
 interface UserData {
   fname: string;
-  lname: string;
-  about: string;
-  phone: string;
+  email:string;
+  phone:string ;
   country: string;
   city: string;
 }
@@ -45,8 +45,7 @@ const EditProfileScreen: React.FC = () => {
 
   const [userData, setUserData] = useState<UserData>({
     fname: '',
-    lname: '',
-    about: '',
+    email: '',
     phone: '',
     country: '',
     city: '',
@@ -56,15 +55,23 @@ const EditProfileScreen: React.FC = () => {
     try {
       // Assuming you have a 'profiles' collection in Firestore
       //const profilesRef = db.collection('profiles');
+      await setDoc(doc(db, "users", "ID"),{
+        name: userData.fname,
+        email: userData.email,
+        phone:userData.phone,
+        country: userData.country,
+        city:userData.city
+    })
 
       // Add the new user data to Firestore
       //await profilesRef.add(userData);
 
-      // Navigate and show success message
+      // Navigate and show success messagea
       navigation.navigate('UserProfile');
       Alert.alert('Profile Updated!', 'Your profile has been updated successfully.');
     } catch (error) {
       console.error('Error updating profile:', error);
+      console.log(userData)
       Alert.alert('Error', 'An error occurred while updating the profile.');
     }
   };
@@ -92,16 +99,7 @@ const EditProfileScreen: React.FC = () => {
                     onChangeText={(text) => setUserData({ ...userData, fname: text })}
                 />
                 </View>
-                <View style={styles.action}>
-                <Image source={require('../../assets/icons8-user-50.png')} style={styles.icon} />
-                <TextInput
-                    style={styles.textInput}
-                    placeholder="Last Name"
-                    placeholderTextColor="#666666"
-                    value={userData.lname}
-                    onChangeText={(text) => setUserData({ ...userData, lname: text })}
-                />
-                </View>
+                
                 <View style={styles.action}>
                 <Image source={require('../../assets/icons8-phone-50.png')} style={styles.icon} />
                 <TextInput
