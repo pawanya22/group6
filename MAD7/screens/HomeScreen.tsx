@@ -9,6 +9,7 @@ import TrendingMovies from '../components/trendingMovie';
 import MovieList from '../components/movieList';
 import SearchScreen from './SearchScreen';
 
+
 const Stack = createNativeStackNavigator();
 
 const ios = Platform.OS === 'ios';
@@ -27,7 +28,7 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
       <SafeAreaView style={ios ? { marginBottom: -2 } : { marginBottom: 3 }}>
         <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginHorizontal: 140 }}>
-          <Text style={{ fontWeight: 'bold', fontSize: 28, color: 'white' }}>
+          <Text style={{ fontWeight: 'bold', fontSize: 30, color: 'white' }}>
             <Text style={styles.text}>CINE</Text>app
           </Text>
           <TouchableOpacity onPress={() => navigation.navigate("Search")}>
