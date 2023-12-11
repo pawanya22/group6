@@ -1,53 +1,40 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView, TouchableWithoutFeedback, Dimensions, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { styles } from '../theme';
-
-var { width, height } = Dimensions.get('window');
+import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
 
 interface MovieListProps {
   title: string;
-  data: any[]; // Replace 'any[]' with the actual type of your data
-  hideSeeAll?: boolean;
+  hideSeeAll: boolean;
+  data: any[]; // Add this line to include the 'data' prop
 }
 
-const MovieList: React.FC<MovieListProps> = ({ title, data, hideSeeAll }) => {
-  let movieName = 'Ant-Man and the Wasp: Quantumania';
-  const navigation = useNavigation();
-
+const MovieList: React.FC<MovieListProps> = ({ title, hideSeeAll, data }) => {
   return (
-    <View style={{ marginBottom: 8, marginTop: 8 }}>
-      <View style={{ marginHorizontal: 16, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Text style={{ color: 'white', fontSize: 18 }}>{title}</Text>
-        {!hideSeeAll && (
-          <TouchableOpacity>
-            <Text style={[styles.text, { fontSize: 16 }]}>
-              See all
-            </Text>
-          </TouchableOpacity>
-        )}
-      </View>
+    <View style={{ marginVertical: 6 }}>
+      <Text style={{ color: 'white', fontSize: 18, marginLeft: 16, marginBottom: 5 }}>{title}</Text>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ paddingHorizontal: 15 }}
       >
-        {data.map((item, index) => {
-          return (
-            <TouchableWithoutFeedback key={index} onPress={() => navigation.navigate('Movie', item)}>
-              <View style={{ marginVertical: 8, marginRight: 16 }}>
-                <Image
-                  source={{ uri: 'data:image/jpeg;base64,' }} // Add the actual source for the Image
-                  style={{ width: width * 0.33, height: height * 0.22, borderRadius: 16 }}
-                />
-                <Text style={{ color: 'white', marginLeft: 4, fontSize: 14 }}>
-                  {movieName.length > 14 ? movieName.slice(0, 14) + '...' : movieName}
-                </Text>
-              </View>
-            </TouchableWithoutFeedback>
-          );
-        })}
+        {data.map((movie, index) => (
+          <TouchableOpacity key={index} style={{ marginRight: 16, alignItems: 'center' }}>
+            <View style={{ overflow: 'hidden', borderRadius: 12, height: 180, width: 120, borderColor: 'border-neutral-500' }}>
+              <Image
+                style={{ borderRadius: 12, height: 180, width: 120 }}
+                source={{ uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}` }}
+              />
+            </View>
+            <Text style={{ color: 'white', fontSize: 12, marginTop: 5 }}>
+              {movie.title.length > 15 ? movie.title.slice(0, 15) + '...' : movie.title}
+            </Text>
+          </TouchableOpacity>
+        ))}
       </ScrollView>
+      {!hideSeeAll && (
+        <TouchableOpacity style={{ marginTop: 10, marginLeft: 16 }}>
+          <Text style={{ color: 'white', fontSize: 16 }}>See All</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

@@ -1,104 +1,141 @@
-import { StyleSheet, Text, TouchableOpacity, View, ScrollView, Dimensions, SafeAreaView, Image } from 'react-native'
-import React, { useState } from 'react'
-//import { Image } from 'react-native-elements'
-import { NavigationContainer } from '@react-navigation/native'
+import React, { useState, useEffect } from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  SafeAreaView,
+  Image,
+  Dimensions,
+  StyleProp,
+  ViewStyle,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import MovieList from '../components/movieList';
 
+var { width, height } = Dimensions.get('window');
 
-var { width, height } = Dimensions.get('window')
+interface PersonScreenProps {}
 
-interface PersonScreen {}
+const PersonScreen: React.FC<PersonScreenProps> = () => {
+  const navigation = useNavigation();
+  const [similarMovies, setSimilarMovies] = useState<any[]>([]);
+  const [personDetails, setPersonDetails] = useState<any>({});
+  const [loading, setLoading] = useState(false);
 
-const PersonScreen = () => {
-    const navigation = useNavigation();
- // const[personMovies,setPersonMovies]=useState {[1,2,3,4]}
-    const [similarMovies, setSimilarMovies] = useState([1, 2, 3, 4, 5]);
-    let movieName = 'Ant-Man and the Wasp: Quantumania';
+  useEffect(() => {
+    const fetchPersonDetails = async () => {
+      try {
+        setLoading(true);
+        const apiKey = '02221cab5de67332d75ff25ccc44e871';
+        const personId = '123';
+        const response = await fetch(
+          `https://api.themoviedb.org/3/person/${personId}?api_key=${apiKey}`
+        );
+        const data = await response.json();
+        setPersonDetails(data);
 
+        const similarMoviesResponse = await fetch(
+          `https://api.themoviedb.org/3/person/${personId}/movie_credits?api_key=${apiKey}`
+        );
+        const similarMoviesData = await similarMoviesResponse.json();
+        setSimilarMovies(similarMoviesData.cast);
+      } catch (error) {
+        console.error('Error fetching person details:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPersonDetails();
+  }, []);
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
-    <ScrollView>
-      <SafeAreaView>
-        <View style={{ flex: 1 }}>
-          <TouchableOpacity onPress={()=>navigation.goBack()}>
-            <Image style={{ width: 40, height: 40, marginTop: 50, marginLeft: 30 }} source={{uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4hgjD8Q2ZFVh95kLsSwr20CKZdHwNtD1osQ&usqp=CAU'}} />
-          </TouchableOpacity>
+      <ScrollView>
+        <SafeAreaView>
+          <View style={{ flex: 1 }}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Image
+                style={{ width: 40, height: 40, marginTop: 50, marginLeft: 30 }}
+                source={{
+                  uri:
+                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4hgjD8Q2ZFVh95kLsSwr20CKZdHwNtD1osQ&usqp=CAU',
+                }}
+              />
+            </TouchableOpacity>
 
-          {/*preson details*/}
+            <View style={{ alignItems: 'center' }}>
+              <View>
+                <Image
+                  style={{
+                    width: 200,
+                    height: 200,
+                    borderRadius: 100,
+                    marginTop: 20,
+                    alignContent: 'center',
+                    alignItems: 'center',
+                    borderWidth: 2,
+                    borderColor: 'gray',
+                  }}
+                  source={{ uri: `https://image.tmdb.org/t/p/w500${personDetails.profile_path}` }}
+                />
+              </View>
+            </View>
 
-          <View style={{ alignItems: 'center',/* shadowColor: 'white', shadowRadius: 40, shadowOffset: { width: 0, height: 5 }, shadowOpacity: 1 */ }}>
+            <View style={{ alignItems: 'center', marginTop: 10 }}>
+              <Text style={{ fontSize: 30, color: 'white' }}>{personDetails.name}</Text>
+              <Text style={{ fontSize: 15, color: 'white' }}>
+                {personDetails.place_of_birth}
+              </Text>
+            </View>
+
+            <View style={styles.details_box}>
+              <View style={styles.frist_box}>
+                <Text style={{ fontSize: 13, color: '#c2c2c2' }}>
+                  {personDetails.gender === 2 ? 'Male' : 'Female'}
+                </Text>
+                <Text style={{ fontSize: 13, color: '#c2c2c2' }}>
+                  {personDetails.known_for_department}
+                </Text>
+              </View>
+              <View style={styles.box_line_1} />
+              <View style={styles.second_box}>
+                <Text style={{ fontSize: 13, color: '#c2c2c2' }}>
+                  {personDetails.birthday}
+                </Text>
+              </View>
+            </View>
+
             <View>
-              <Image style={{ width: 200, height: 200, borderRadius: 100, marginTop: 20, alignContent: 'center', alignItems: 'center', borderWidth: 2, borderColor: 'gray' }} source={{uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4hgjD8Q2ZFVh95kLsSwr20CKZdHwNtD1osQ&usqp=CAU'}} />
+              <Text style={styles.bio}>Biography</Text>
+              <Text style={styles.bio_data}>{personDetails.biography}</Text>
             </View>
+
+            <ScrollView horizontal>
+              <View style={{ width: 700, height: 250, flexDirection: 'row' }}>
+                <MovieList title="Similar Movies" hideSeeAll={true} data={similarMovies} />
+              </View>
+            </ScrollView>
           </View>
-
-          <View style={{ alignItems: 'center', marginTop: 10 }}>
-            <Text style={{ fontSize: 30, color: 'white' }} >Travis Fimmel</Text>
-            <Text style={{ fontSize: 15, color: 'white' }}>Echuca, Victoria, Australia</Text>
-          </View>
-
-          <View style={styles.details_box}>
-            <View style={styles.frist_box}>
-              <Text style={{ fontSize: 13, color: '#c2c2c2' }}>Actor</Text>
-              <Text style={{ fontSize: 13, color: '#c2c2c2' }}>male</Text>
-            </View>
-            <View style={styles.box_line_1} />
-            <View style={styles.second_box}>
-              <Text style={{ fontSize: 13, color: '#c2c2c2' }}>Birthday</Text>
-              <Text style={{ fontSize: 13, color: '#c2c2c2' }}>2001.11.30</Text>
-            </View>
-            <View style={styles.box_line_1} />
-            <View style={{justifyContent: 'center',alignItems: 'center',}}>
-              <Text style={{ fontSize: 13, color: '#c2c2c2' }}>Know for</Text>
-              <Text style={{ fontSize: 13, color: '#c2c2c2' }}>Acting</Text>
-            </View>
-            <View style={styles.box_line_1} />
-            <View style={{justifyContent: 'center',alignItems: 'center',}}>
-              <Text style={{ fontSize: 13, color: '#c2c2c2' }}>popiularity</Text>
-              <Text style={{ fontSize: 13, color: '#c2c2c2' }}>20-30</Text>
-            </View>
-          </View>
-
-          <View>
-            <Text style={styles.bio}>Biography</Text>
-            <Text style={styles.bio_data}>
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Praesentium
-              animi a non itaque modi quas corrupti tempore inventore fuga!
-              Voluptate illum laboriosam pariatur consequuntur neque quisquam
-              deserunt porro sequi, eos modi ad dolores ipsa inventore vero, quos
-              deleniti? Eaque saepe, sequi ratione hic cupiditate asperiores culpa
-              modi cum nobis dolor.
-            </Text>
-          </View>
-
-          <ScrollView horizontal>
-            <View style={{ width: 700, height: 250, flexDirection: 'row' }}>
-              <MovieList title="Similar Movies" hideSeeAll={true} data={similarMovies} />
-            </View>
-          </ScrollView>
-        </View>
-      </SafeAreaView>
-    </ScrollView>
-  </View>
-
-  )
-}
+        </SafeAreaView>
+      </ScrollView>
+    </View>
+  );
+};
 
 export default PersonScreen;
 
-const styles = StyleSheet.create({
+const styles = {
   details_box: {
     width: 320,
     height: 60,
-    //backgroundColor: '#1607ba',
     alignSelf: 'center',
     borderRadius: 30,
     flexDirection: 'row',
     marginTop: 10,
-    borderWidth:1,
-    borderColor:'gray',
+    borderWidth: 1,
+    borderColor: 'gray',
     color: 'white',
   },
   frist_box: {
@@ -115,14 +152,14 @@ const styles = StyleSheet.create({
   },
   second_box: {
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center', // Fix: Change 'alignItems' to 'alignItems' or remove it if not needed
     color: 'white',
   },
 
   bio: {
     marginTop: 10,
-    marginLeft:10,
-    fontSize:20,
+    marginLeft: 10,
+    fontSize: 20,
     color: 'white',
   },
   bio_data: {
@@ -130,5 +167,4 @@ const styles = StyleSheet.create({
     marginTop: 10,
     color: 'gray',
   },
- 
-})
+};
