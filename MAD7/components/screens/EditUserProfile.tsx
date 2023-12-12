@@ -55,9 +55,9 @@ const EditProfileScreen: React.FC = () => {
     try {
       // Assuming you have a 'profiles' collection in Firestore
       //const profilesRef = db.collection('profiles');
-      await setDoc(doc(db, "users", "ID"),{
-        name: userData.fname,
-        email: userData.email,
+      await addDoc(collection(db, "users"),{
+        name:userData.fname,
+        email:userData.email,
         phone:userData.phone,
         country: userData.country,
         city:userData.city
