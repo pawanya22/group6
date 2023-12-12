@@ -6,40 +6,36 @@ import {
   ScrollView,
   SafeAreaView,
   Image,
-  Dimensions,
-  StyleProp,
-  ViewStyle,
+  StyleSheet,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation, useRoute } from '@react-navigation/native';
 import MovieList from '../components/movieList';
+import { RootParamList } from '../types';
 
-var { width, height } = Dimensions.get('window');
-
-interface PersonScreenProps {}
-
-const PersonScreen: React.FC<PersonScreenProps> = () => {
-  const navigation = useNavigation();
+const PersonScreen: React.FC = () => {
   const [similarMovies, setSimilarMovies] = useState<any[]>([]);
   const [personDetails, setPersonDetails] = useState<any>({});
   const [loading, setLoading] = useState(false);
+
+  const { params: { personId } } = useRoute();
+  const navigation = useNavigation<NavigationProp<RootParamList>>();
 
   useEffect(() => {
     const fetchPersonDetails = async () => {
       try {
         setLoading(true);
         const apiKey = '02221cab5de67332d75ff25ccc44e871';
-        const personId = '123';
-        const response = await fetch(
+        const personResponse = await fetch(
           `https://api.themoviedb.org/3/person/${personId}?api_key=${apiKey}`
         );
-        const data = await response.json();
-        setPersonDetails(data);
+        const personData = await personResponse.json();
+        setPersonDetails(personData);
 
-        const similarMoviesResponse = await fetch(
+        const movieCreditsResponse = await fetch(
           `https://api.themoviedb.org/3/person/${personId}/movie_credits?api_key=${apiKey}`
         );
-        const similarMoviesData = await similarMoviesResponse.json();
-        setSimilarMovies(similarMoviesData.cast);
+        const movieCreditsData = await movieCreditsResponse.json();
+        setSimilarMovies(movieCreditsData.cast);
       } catch (error) {
         console.error('Error fetching person details:', error);
       } finally {
@@ -48,7 +44,11 @@ const PersonScreen: React.FC<PersonScreenProps> = () => {
     };
 
     fetchPersonDetails();
-  }, []);
+  }, [personId]);
+
+  const handleMoviePress = (movie: any) => {
+    navigation.navigate('Movie', { movieId: movie.id });
+  };
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
@@ -64,7 +64,7 @@ const PersonScreen: React.FC<PersonScreenProps> = () => {
                 }}
               />
             </TouchableOpacity>
-
+            
             <View style={{ alignItems: 'center' }}>
               <View>
                 <Image
@@ -91,7 +91,7 @@ const PersonScreen: React.FC<PersonScreenProps> = () => {
             </View>
 
             <View style={styles.details_box}>
-              <View style={styles.frist_box}>
+              <View style={styles.first_box}>
                 <Text style={{ fontSize: 13, color: '#c2c2c2' }}>
                   {personDetails.gender === 2 ? 'Male' : 'Female'}
                 </Text>
@@ -114,7 +114,7 @@ const PersonScreen: React.FC<PersonScreenProps> = () => {
 
             <ScrollView horizontal>
               <View style={{ width: 700, height: 250, flexDirection: 'row' }}>
-                <MovieList title="Similar Movies" hideSeeAll={true} data={similarMovies} />
+                <MovieList title="Similar Movies" hideSeeAll={true} data={similarMovies} onPress={handleMoviePress}/>
               </View>
             </ScrollView>
           </View>
@@ -126,7 +126,7 @@ const PersonScreen: React.FC<PersonScreenProps> = () => {
 
 export default PersonScreen;
 
-const styles = {
+const styles = StyleSheet.create({
   details_box: {
     width: 320,
     height: 60,
@@ -138,7 +138,7 @@ const styles = {
     borderColor: 'gray',
     color: 'white',
   },
-  frist_box: {
+  first_box: {
     marginLeft: 13,
     justifyContent: 'center',
     color: 'white',
@@ -152,7 +152,7 @@ const styles = {
   },
   second_box: {
     justifyContent: 'center',
-    alignItems: 'center', // Fix: Change 'alignItems' to 'alignItems' or remove it if not needed
+    alignItems: 'center',
     color: 'white',
   },
 
@@ -167,4 +167,4 @@ const styles = {
     marginTop: 10,
     color: 'gray',
   },
-};
+});

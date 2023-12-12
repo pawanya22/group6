@@ -11,6 +11,8 @@ import {
   Dimensions,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { NavigationProp } from '@react-navigation/native';
+import { RootParamList } from '../types';
 
 var { width, height } = Dimensions.get('window');
 
@@ -50,6 +52,10 @@ const SearchScreen: React.FC<{ navigation: NavigationProps }> = ({ navigation })
     fetchSearchResults();
   }, [searchQuery]);
 
+  const navigateToMovieScreen = (movieId: string) => {
+    navigation.navigate('Movie', { movieId });
+  };
+
   return (
     <SafeAreaView style={{ backgroundColor: 'black', flex: 1 }}>
       <View style={{ margin: 4, marginTop: 50, flexDirection: 'column', alignItems: 'center' }}>
@@ -62,12 +68,13 @@ const SearchScreen: React.FC<{ navigation: NavigationProps }> = ({ navigation })
             borderRadius: 999,
             width: '90%',
             marginBottom: 10,
+            backgroundColor: 'black', // Set background color to white
           }}
         >
           <TextInput
             placeholder="Search Movie"
             placeholderTextColor="gray"
-            style={{ paddingBottom: 10, paddingLeft: 6, flex: 1, fontWeight: 'bold' }}
+            style={{ paddingBottom: 10, paddingLeft: 6, flex: 1, fontWeight: 'bold', color: 'white' }} // Set text color to black
             value={searchQuery}
             onChangeText={(text) => setSearchQuery(text)}
           />
@@ -80,7 +87,7 @@ const SearchScreen: React.FC<{ navigation: NavigationProps }> = ({ navigation })
               style={{ width: 40, height: 40 }}
               source={{
                 uri:
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4hgjD8Q2ZFVh95kLsSwr20CKZdHwNtD1osQ&usqp=CAU',
+                  'https://www.google.com/imgres?imgurl=https%3A%2F%2Fc8.alamy.com%2Fcomp%2FP2D45Y%2Fback-vector-icon-isolated-on-transparent-background-back-logo-concept-P2D45Y.jpg&tbnid=1VxSAiGpCSKu1M&vet=12ahUKEwiZ_4mz5IaDAxVia2wGHZ3tD7YQMygKegQIARBk..i&imgrefurl=https%3A%2F%2Fwww.alamy.com%2Fback-vector-icon-isolated-on-transparent-background-back-logo-concept-image208042407.html&docid=OvttOTjkSmIkRM&w=1300&h=1390&q=back%20icon%20without%20background&ved=2ahUKEwiZ_4mz5IaDAxVia2wGHZ3tD7YQMygKegQIARBk',
               }}
             />
           </TouchableOpacity>
@@ -108,7 +115,7 @@ const SearchScreen: React.FC<{ navigation: NavigationProps }> = ({ navigation })
             {results.map((item, index) => (
               <TouchableWithoutFeedback
                 key={index}
-                onPress={() => navigation.push('Movie', item)}
+                onPress={() => navigateToMovieScreen(item.id)}
               >
                 <View style={{ marginVertical: 3, marginBottom: 20 }}>
                   {/* Display movie image */}

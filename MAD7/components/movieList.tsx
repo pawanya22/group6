@@ -5,19 +5,20 @@ interface MovieListProps {
   title: string;
   hideSeeAll: boolean;
   data: any[]; // Add this line to include the 'data' prop
+  onPress: (movie: any) => void; // Add onPress prop
 }
 
-const MovieList: React.FC<MovieListProps> = ({ title, hideSeeAll, data }) => {
+const MovieList: React.FC<MovieListProps> = ({ title, hideSeeAll, data, onPress }) => {
   return (
     <View style={{ marginVertical: 6 }}>
-      <Text style={{ color: 'white', fontSize: 18, marginLeft: 16, marginBottom: 5 }}>{title}</Text>
+      {title && <Text style={{ color: 'white', fontSize: 18, marginLeft: 16, marginBottom: 5 }}>{title}</Text>}
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ paddingHorizontal: 15 }}
       >
         {data.map((movie, index) => (
-          <TouchableOpacity key={index} style={{ marginRight: 16, alignItems: 'center' }}>
+          <TouchableOpacity key={index} style={{ marginRight: 16, alignItems: 'center' }} onPress={() => onPress(movie)}>
             <View style={{ overflow: 'hidden', borderRadius: 12, height: 180, width: 120, borderColor: 'border-neutral-500' }}>
               <Image
                 style={{ borderRadius: 12, height: 180, width: 120 }}

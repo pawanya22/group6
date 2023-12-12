@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, Text, View, Image, Dimensions } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { ScrollView, Text, View, Image, Dimensions, TouchableOpacity, GestureResponderEvent } from 'react-native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { RootParamList } from '../types';
+
+var { width, height } = Dimensions.get('window');
 
 interface TrendingMoviesProps {
   data: any[]; // Replace 'any[]' with the actual type of your data
 }
 
-const TrendingMovies: React.FC<TrendingMoviesProps> = ({ data }) => {
-  const navigation = useNavigation();
+const TrendingMovies: React.FC<TrendingMoviesProps> = ({ data, onPress }) => {
   const [trendingMovies, setTrendingMovies] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const navigation = useNavigation<NavigationProp<RootParamList>>();
 
   useEffect(() => {
     const fetchTrendingMovies = async () => {
@@ -39,11 +42,13 @@ const TrendingMovies: React.FC<TrendingMoviesProps> = ({ data }) => {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ paddingHorizontal: 15 }}
       >
-        {loading ? (
-          <Text style={{ color: 'white' }}>Loading...</Text>
-        ) : (
-          trendingMovies.map((item, index) => (
-            <View key={index} style={{ marginVertical: 3, marginRight: 16 }}>
+        {data.map((item, index) => (
+          <TouchableOpacity
+            key={index}
+            style={{ marginVertical: 3, marginRight: 16 }}
+            onPress={() => onPress(item)}
+          >
+            <View>
               <Image
                 source={{ uri: `https://image.tmdb.org/t/p/w500${item.poster_path}` }}
                 style={{
@@ -56,11 +61,10 @@ const TrendingMovies: React.FC<TrendingMoviesProps> = ({ data }) => {
                 {item.title.length > 22 ? item.title.slice(0, 22) + '...' : item.title}
               </Text>
             </View>
-          ))
-        )}
+          </TouchableOpacity>
+        ))}
       </ScrollView>
     </View>
   );
 };
-
 export default TrendingMovies;

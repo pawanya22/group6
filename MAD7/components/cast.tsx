@@ -7,10 +7,11 @@ import { RootParamList } from '../types';
 interface CastProps {
   cast: any[]; // Replace 'any[]' with the actual type of your cast data
   navigation: NavigationProp<RootParamList>;
+  onPress: (person: any) => void;
 }
 
-const Cast: React.FC<CastProps> = ({ cast, navigation }) => {
-  //const navigation = useNavigation();
+const Cast: React.FC<CastProps> = ({ cast, onPress }) => {
+  const navigation = useNavigation<NavigationProp<RootParamList>>();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -22,6 +23,7 @@ const Cast: React.FC<CastProps> = ({ cast, navigation }) => {
           `https://api.themoviedb.org/3/movie/${cast[0]}/credits?api_key=${apiKey}`
         );
         const data = await response.json();
+        console.log('Cast API Response:', data); // Log the response for debugging
         setCast(data.cast);
       } catch (error) {
         console.error('Error fetching cast:', error);
@@ -32,6 +34,14 @@ const Cast: React.FC<CastProps> = ({ cast, navigation }) => {
 
     fetchCast();
   }, [cast]);
+
+  const handlePersonPress = (person: any) => {
+    navigation.navigate('Person', { personId: person.id });
+  };
+
+  if (!loading && (!cast || cast.length === 0)) {
+    return <Text style={{ color: 'white' }}>No cast information available.</Text>;
+  }
 
   return (
     <View style={{ marginVertical: 6 }}>
@@ -48,12 +58,12 @@ const Cast: React.FC<CastProps> = ({ cast, navigation }) => {
             <TouchableOpacity
               key={index}
               style={{ marginRight: 16, alignItems: 'center' }}
-              onPress={() => navigation.navigate('Person', person)}
+              onPress={() => onPress(person)}
             >
               <View style={{ overflow: 'hidden', borderRadius: 12, height: 100, width: 80, alignItems: 'center', borderColor: 'border-neutral-500' }}>
                 <Image
                   style={{ borderRadius: 50, height: 100, width: 80 }}
-                  source={{ uri: `https://image.tmdb.org/t/p/w500${person.profile_path}` }}
+                  source={{ uri: person.profile_path ? `https://image.tmdb.org/t/p/w500${person.profile_path}` : 'default_image_url' }}
                 />
               </View>
               <Text style={{ color: 'white', fontSize: 12 }}>
